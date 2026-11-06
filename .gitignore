@@ -1,0 +1,26 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# macOS
+.DS_Store
+
+# iOS 平台目录实体在 ~/dev/roll_call_ios/ios，此处的 ios 是 symlink，
+# git 只记录链接路径不记录内容；临时解除 symlink 时勿误提交 ios/ 实体
+ios
+
+# 测试样例（本机路径相关）
+# 无：样例点名册不入库
+
+# 临时文件
+*.log
+/tmp/
