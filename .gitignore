@@ -16,6 +16,7 @@ pubspec.lock
 
 # iOS 平台目录（实体，2026-11-08 从 ~/dev/roll_call_ios 迁入并纳入版本控制；
 # 签名与工程配置在库，编译产物排除）
+ios/DerivedData
 ios/DerivedData/
 ios/build/
 ios/Pods/

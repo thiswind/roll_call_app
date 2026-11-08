@@ -86,7 +86,10 @@ class _RootPageState extends State<RootPage> {
       }
       final replaced = await CourseStore.upsert(course);
       setState(() {
-        _course = null; // 回到课程列表，让用户看到导入结果
+        // 导入成功后直接进入该课程，立即可点名。
+        _course = course;
+        _index = 0;
+        _selectedStudent = null;
         _showDetail = false;
       });
       _toast(replaced
