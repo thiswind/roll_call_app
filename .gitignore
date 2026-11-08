@@ -14,9 +14,16 @@ pubspec.lock
 # macOS
 .DS_Store
 
-# iOS 平台目录实体在 ~/dev/roll_call_ios/ios，此处的 ios 是 symlink，
-# git 只记录链接路径不记录内容；临时解除 symlink 时勿误提交 ios/ 实体
-ios
+# iOS 平台目录（实体，2026-11-08 从 ~/dev/roll_call_ios 迁入并纳入版本控制；
+# 签名与工程配置在库，编译产物排除）
+ios/DerivedData/
+ios/build/
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/ephemeral/
+ios/Flutter/flutter_export_environment.sh
+*.xcuserdatad/
+xcuserdata/
 
 # 测试样例（本机路径相关）
 # 无：样例点名册不入库
