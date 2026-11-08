@@ -113,6 +113,16 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
+  /// 返回课程列表（返回按钮与 iOS 侧滑手势共用）。
+  void _backToCourseList() {
+    setState(() {
+      _course = null;
+      _index = 0;
+      _selectedStudent = null;
+      _showDetail = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final course = _course;
@@ -131,26 +141,41 @@ class _RootPageState extends State<RootPage> {
           onOpenStudent: (s) => setState(() {
                 _selectedStudent = s;
                 _showDetail = true;
-              })),
-      ProfilePage(course: course),
+              }),
+          onBack: _backToCourseList),
+      ProfilePage(course: course, onBack: _backToCourseList),
     ];
-    return Scaffold(
-      body: pages[_index],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.person_search_outlined),
-            selectedIcon: Icon(Icons.person_search),
-            label: '点名',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-            label: '我的',
-          ),
-        ],
+    return PopScope(
+      // 课程内页（点名/我的/学生详情）没有独立路由，iOS 侧滑返回手势
+      // 需要在此拦截：退到课程列表而不是退出 App。
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) {
+          if (_showDetail) {
+            setState(() => _showDetail = false);
+          } else {
+            _backToCourseList();
+          }
+        }
+      },
+      child: Scaffold(
+        body: pages[_index],
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: _index,
+          onDestinationSelected: (i) => setState(() => _index = i),
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.person_search_outlined),
+              selectedIcon: Icon(Icons.person_search),
+              label: '点名',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.person_outline),
+              selectedIcon: Icon(Icons.person),
+              label: '我的',
+            ),
+          ],
+        ),
       ),
     );
   }

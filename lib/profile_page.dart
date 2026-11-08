@@ -5,8 +5,9 @@ import 'course.dart';
 /// 个人中心页：教师信息 + 当前课程信息。
 class ProfilePage extends StatelessWidget {
   final Course course;
+  final VoidCallback onBack;
 
-  const ProfilePage({super.key, required this.course});
+  const ProfilePage({super.key, required this.course, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,26 @@ class ProfilePage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         children: [
           const SizedBox(height: 8),
+          Row(
+            children: [
+              IconButton(
+                tooltip: '返回课程列表',
+                icon: const Icon(Icons.arrow_back),
+                onPressed: onBack,
+              ),
+              Expanded(
+                child: Text(
+                  course.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                ),
+              ),
+            ],
+          ),
           Center(
             child: Column(
               children: [

@@ -9,8 +9,13 @@ import 'course.dart';
 class HomePage extends StatefulWidget {
   final Course course;
   final void Function(Student student) onOpenStudent;
+  final VoidCallback onBack;
 
-  const HomePage({super.key, required this.course, required this.onOpenStudent});
+  const HomePage(
+      {super.key,
+      required this.course,
+      required this.onOpenStudent,
+      required this.onBack});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -67,8 +72,7 @@ class _HomePageState extends State<HomePage> {
               IconButton(
                 tooltip: '返回课程列表',
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () =>
-                    Navigator.of(context).maybePop(),
+                onPressed: widget.onBack,
               ),
               Expanded(
                 child: Text(
