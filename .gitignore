@@ -26,8 +26,22 @@ ios/Flutter/flutter_export_environment.sh
 *.xcuserdatad/
 xcuserdata/
 
-# 测试样例（本机路径相关）
-# 无：样例点名册不入库
+# 本地专用（不入公开仓）：CAT 工作记忆 / 提审档案 / 含真实学生 PII 的截图与构建脚本
+cursor-agent-team/
+.trae/
+AGENTS.md
+screenshots/
+scripts/
+docs/appstore-submission.md
+docs/action-checklist.md
+docs/decision-record.md
+
+# Android 构建机本地文件：签名密钥与配置（绝不入库）
+android/key.properties
+android/**/*.keystore
+android/**/*.jks
+android/.gradle/
+android/local.properties
 
 # 临时文件
 *.log
