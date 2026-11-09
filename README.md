@@ -6,8 +6,13 @@
 ## 下载安装
 
 - **iOS**：[App Store](https://apps.apple.com/us/app/id6832057743)（课堂点名-ehall）
-- **Android**：从 [Releases](https://github.com/thiswind/roll_call_app/releases/latest) 下载 APK 安装
-  （扫码后若微信拦截下载，请点右上角菜单 →「在浏览器打开」）
+- **Android**：扫码或从 [Releases](https://github.com/thiswind/roll_call_app/releases/latest) 下载 APK 安装
+
+<p align="center">
+  <img src="screenshots/download_qr.png" width="220" alt="Android 版下载二维码" title="扫码下载 Android 版"/>
+</p>
+
+扫码后若微信拦截下载，请点右上角菜单 →「在浏览器打开」，浏览器下载后点击安装（需允许安装未知来源应用）。
 
 ## 功能
 
