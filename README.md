@@ -3,6 +3,26 @@
 适配云南大学本科教务系统的点名应用（iOS + Android）。导入教务系统"教师工作手册"导出的点名册
 （dmc.xlsx），一个 App 管理多门课程，滚动点名。
 
+## 界面预览
+
+<p align="center">
+  <img src="screenshots/ios_01_course_list.png" width="240" alt="iOS 课程列表"/>
+  &nbsp;
+  <img src="screenshots/ios_02_random_call.png" width="240" alt="iOS 随机点名"/>
+  <br/>
+  <em>iOS</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/android_03_course_list.png" width="240" alt="Android 课程列表"/>
+  &nbsp;
+  <img src="screenshots/android_01_random_call.png" width="240" alt="Android 随机点名"/>
+  &nbsp;
+  <img src="screenshots/android_02_student_detail.png" width="240" alt="Android 学生详情"/>
+  <br/>
+  <em>Android</em>
+</p>
+
 ## 下载安装
 
 - **iOS**：[App Store](https://apps.apple.com/us/app/id6832057743)（课堂点名-ehall）
