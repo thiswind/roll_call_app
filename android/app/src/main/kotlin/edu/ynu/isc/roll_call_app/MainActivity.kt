@@ -8,14 +8,15 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 // 接收系统"用其他应用打开"传入的文档（与 iOS DocumentImportPlugin 同协议）。
-// 冷启动先缓存 Uri，待 Dart 注册 MethodChannel 后读取；运行中直接推送。
+// 冷启动先复制到缓存并缓存路径，待 Dart 调 getPendingDocuments 时同步返回；
+// 运行中收到新文档直接推送。与 iOS 版语义一致：getPendingDocuments 同步返回路径数组。
 // 微信/QQ 传入的是 content:// Uri 且多数只授予一次性读权限，
 // 立即复制到私有缓存目录再传路径给 Dart，避免读完即失效。
 class MainActivity : FlutterActivity() {
   private val channelName = "edu.ynu.isc.rollCallApp/documents"
   private var channel: MethodChannel? = null
   private var channelReady = false
-  private var pendingUris = mutableListOf<Uri>()
+  private var pendingPaths = mutableListOf<String>()
 
   override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
     super.configureFlutterEngine(flutterEngine)
@@ -25,20 +26,14 @@ class MainActivity : FlutterActivity() {
           when (call.method) {
             "getPendingDocuments" -> {
               channelReady = true
-              val uris = ArrayList(pendingUris)
-              pendingUris.clear()
-              Thread {
-                val paths = uris.mapNotNull { copyToCache(it) }
-                runOnUiThread { ch.invokeMethod("documentReceived", paths) }
-              }.start()
-              result.success(emptyList<String>())
+              val paths = ArrayList(pendingPaths)
+              pendingPaths.clear()
+              result.success(paths)
             }
             else -> result.notImplemented()
           }
         }
       }
-    // 冷启动：Activity 因 VIEW intent 创建时，onCreate 先于 configureFlutterEngine，
-    // intent 已在 handleViewIntent 里缓存。
   }
 
   override fun onNewIntent(intent: Intent) {
@@ -54,19 +49,20 @@ class MainActivity : FlutterActivity() {
   private fun handleViewIntent(intent: Intent?) {
     if (intent?.action != Intent.ACTION_VIEW) return
     val uri = intent.data ?: return
-    if (channelReady) {
-      Thread {
-        val path = copyToCache(uri)
-        if (path != null) {
-          runOnUiThread { channel?.invokeMethod("documentReceived", listOf(path)) }
+    Thread {
+      val path = copyToCache(uri)
+      if (path == null) return@Thread
+      runOnUiThread {
+        if (channelReady) {
+          channel?.invokeMethod("documentReceived", listOf(path))
+        } else {
+          pendingPaths.add(path)
         }
-      }.start()
-    } else {
-      pendingUris.add(uri)
-    }
+      }
+    }.start()
   }
 
-  /// content:// Uri 复制到缓存目录；file:// 直接用路径。
+  // content:// Uri 复制到缓存目录；file:// 直接用路径。
   private fun copyToCache(uri: Uri): String? {
     return try {
       if (uri.scheme == "file") return uri.path
